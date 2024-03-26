@@ -12,13 +12,15 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [basketContent, setBasketContent] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
+  const fetchData = async () => {
+    const response = await axios.get(
+      "site--deliveroo-backend--nhcf6764t4pv.code.run/"
+    );
+    console.log(response.data);
+    setData(response.data);
+    setIsLoading(false);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get("http://localhost:3200/");
-      console.log(response.data);
-      setData(response.data);
-      setIsLoading(false);
-    };
     fetchData();
   }, [setBasketContent]);
 
@@ -50,8 +52,8 @@ function App() {
         <div className="sections">
           {categories.map((category, index) => {
             return (
-              index < categories.length / 2 && (
-                // !(category.meals === {}}) && (
+              category.meals.length > 0 && (
+                // index < categories.length / 2 && (
                 <section key={category.name}>
                   <h2>{category.name}</h2>
 
