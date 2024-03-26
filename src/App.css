@@ -71,35 +71,100 @@ main {
 .panier {
   position: sticky;
   top: 20px;
+  height: 300px;
   width: 350px;
-  height: 200px;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
   padding: 10px;
   background-color: #ffffff;
   box-shadow: 10px 10px 10px gray;
 }
 .panier button {
   border-radius: 5px;
-  background-color: #bac3c3;
   width: 100%;
   border: none;
   height: 50px;
   font-size: 16px;
-  color: #868a8a;
   font-weight: bold;
 }
 .panier-content {
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.panier p {
-  font-size: 16px;
-  color: #868a8a;
-  text-align: center;
-  margin: 40px 0px;
+
+.panier-article {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-right: 10px;
+}
+.panier span {
+  margin: 0 3px;
+  font-size: 14px;
 }
 
+.qtityButton {
+  width: 15px;
+  height: 15px;
+  border: 2px solid #00ccbc;
+  border-radius: 50%;
+  padding: 1px;
+  display: flex;
+  align-items: center;
+}
+.panier p {
+  font-size: 13px;
+  color: #868a8a;
+  text-align: center;
+}
+
+.panier > p {
+  padding: 40px 0;
+}
+/* .panier-content p,
+.panier-bottom p {
+  font-size: 13px;
+  color: #868a8a;
+  text-align: center;
+} */
+
+.order-details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* background-color: pink; */
+}
+
+.panier-article:last-of-type {
+  box-sizing: unset;
+  padding-bottom: 15px;
+  border-bottom: 1px solid lightgray;
+}
+.panier-bottom {
+  width: 100%;
+}
+.panier-bottom-line {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.panier-bottom-line:last-child {
+  border-top: 2px solid lightgray;
+  padding-top: 15px;
+  font-weight: bold;
+}
 /* MEALS */
 section {
   width: 100%;
@@ -154,8 +219,7 @@ h2 {
   font-size: 17px;
   color: #808484;
 }
-/* .meal-footer > span:last-child {
-  /* margin-left: 10px; */
+
 h3 {
   font-size: 18px;
   color: #2e3333;
