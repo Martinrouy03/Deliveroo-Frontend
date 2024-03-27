@@ -10,11 +10,15 @@ import { useEffect, useState } from "react";
 function App() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [basketContent, setBasketContent] = useState([]);
-  const [subTotal, setSubTotal] = useState(0);
+  const [cart, setCart] = useState([]);
+  let subTotal = 0;
+  cart.map((meal) => {
+    subTotal = subTotal + meal.price * meal.quantity;
+  });
   const fetchData = async () => {
     const response = await axios.get(
-      "site--deliveroo-backend--nhcf6764t4pv.code.run/"
+      "https://site--deliveroo-backend--nhcf6764t4pv.code.run/"
+      // "http://localhost:3200/"
     );
     console.log(response.data);
     setData(response.data);
@@ -22,7 +26,7 @@ function App() {
   };
   useEffect(() => {
     fetchData();
-  }, [setBasketContent]);
+  }, [setCart]);
 
   const { categories, restaurant } = data;
   return isLoading ? (
@@ -53,7 +57,6 @@ function App() {
           {categories.map((category, index) => {
             return (
               category.meals.length > 0 && (
-                // index < categories.length / 2 && (
                 <section key={category.name}>
                   <h2>{category.name}</h2>
 
@@ -64,30 +67,25 @@ function App() {
                           key={meal.id}
                           className="meal"
                           onClick={() => {
-                            let isInBasket = false;
-                            const newBasketContent = [...basketContent];
+                            let isInCart = false;
+                            const newCart = [...cart];
                             let newtotal = 0;
-                            newBasketContent.map((article) => {
+                            newCart.map((article) => {
                               if (article.id.includes(meal.id)) {
                                 article.quantity = article.quantity + 1;
-                                isInBasket = true;
+                                isInCart = true;
                               }
-                              newtotal =
-                                newtotal + article.quantity * article.price;
                             });
-                            if (!isInBasket) {
+                            if (!isInCart) {
                               const newMeal = {
                                 title: meal.title,
                                 quantity: 1,
                                 price: meal.price,
                                 id: meal.id,
                               };
-                              newtotal =
-                                newtotal + newMeal.quantity * newMeal.price;
-                              newBasketContent.push(newMeal);
+                              newCart.push(newMeal);
                             }
-                            setSubTotal(newtotal);
-                            setBasketContent(newBasketContent);
+                            setCart(newCart);
                           }}
                         >
                           <div className="meal-desc">
@@ -127,44 +125,35 @@ function App() {
             );
           })}
         </div>
-        <div
-          className="panier"
-          // style={{ height: basketContent.length === 0 ? "150px" : "auto" }}
-        >
+        <div className="panier">
           <button
             style={{
-              backgroundColor:
-                basketContent.length === 0 ? "#bac3c3" : "#00CCBC",
-              color: basketContent.length === 0 ? "#868a8a" : "#ffffff",
+              backgroundColor: cart.length === 0 ? "#bac3c3" : "#00CCBC",
+              color: cart.length === 0 ? "#868a8a" : "#ffffff",
             }}
           >
             Valider mon panier
           </button>
-          {basketContent.length === 0 ? (
+          {cart.length === 0 ? (
             <p>Votre panier est vide</p>
           ) : (
             <div>
               <div className="panier-content">
-                {basketContent.map(({ title, quantity, price, id }, index) => {
+                {cart.map(({ title, quantity, price, id }, index) => {
                   return (
                     <div className="panier-article" key={id}>
                       <div className="quantity">
                         <div
                           className="qtityButton"
                           onClick={() => {
-                            const newBasketContent = [...basketContent];
-                            newBasketContent[index].quantity = quantity - 1;
+                            const newCart = [...cart];
+                            newCart[index].quantity = quantity - 1;
 
                             let newtotal = 0;
-                            newBasketContent.map((article) => {
-                              newtotal =
-                                newtotal + article.quantity * article.price;
-                            });
-                            setSubTotal(newtotal);
-                            if (newBasketContent[index].quantity === 0) {
-                              newBasketContent.splice(index, 1);
+                            if (newCart[index].quantity === 0) {
+                              newCart.splice(index, 1);
                             }
-                            setBasketContent(newBasketContent);
+                            setCart(newCart);
                           }}
                         >
                           <FontAwesomeIcon
@@ -177,15 +166,10 @@ function App() {
                         <div
                           className="qtityButton"
                           onClick={() => {
-                            const newBasketContent = [...basketContent];
-                            newBasketContent[index].quantity = quantity + 1;
+                            const newCart = [...cart];
+                            newCart[index].quantity = quantity + 1;
                             let newtotal = 0;
-                            newBasketContent.map((article) => {
-                              newtotal =
-                                newtotal + article.quantity * article.price;
-                            });
-                            setSubTotal(newtotal);
-                            setBasketContent(newBasketContent);
+                            setCart(newCart);
                           }}
                         >
                           <FontAwesomeIcon
